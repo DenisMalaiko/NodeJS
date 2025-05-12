@@ -1,0 +1,22 @@
+{
+  "name": "node-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DenisMalaiko/NodeJS.git"
+  },
+  "keywords": [
+    "NodeJS"
+  ],
+  "author": "Denis Malaiko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DenisMalaiko/NodeJS/issues"
+  },
+  "homepage": "https://github.com/DenisMalaiko/NodeJS#readme"
+}
