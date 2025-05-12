@@ -1,15 +1,11 @@
 const averageGrade = (person) => {
-    let sum = 0;
-    for (let i = 0; i < person.grades.length; i++) {
-        if (person.grades[i].score !== undefined && person.grades[i].score !== null) {
-            sum += person.grades[i].score;
-        }
-    }
-    const result = sum / person.grades.length;
+    const grades = person?.grades;
+    const result = grades
+        .filter(grade => grade.score)
+        .reduce((acc, grade) => acc + grade.score, 0);
 
-    console.log(result);
+    console.log(result / grades.length)
 }
-
 
 averageGrade({
     name: 'Chill Student', grades: [
