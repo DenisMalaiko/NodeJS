@@ -12,8 +12,6 @@ const handleRoute = (req: any, res: any) => {
   const key = `${req.method.toUpperCase()} ${req.url}`;
   const handler = router[key];
 
-  console.log("ROUTER ", router)
-
   if (handler) {
     handler(req, res);
   } else {
