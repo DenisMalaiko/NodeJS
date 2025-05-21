@@ -1,7 +1,7 @@
 import router from "../helpers/router.ts";
+import { getUserService } from "./service.ts";
 
 router.addRoute("GET", "/data", (req, res) => {
-  console.log("GET DATA")
-  const data = "DATA";
-  res.end(data);
+  const data = getUserService();
+  res.end(JSON.stringify(data));
 });
