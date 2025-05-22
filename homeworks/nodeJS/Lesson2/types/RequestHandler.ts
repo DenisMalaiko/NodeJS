@@ -1,1 +1,0 @@
-export type RequestHandler = (req: any, res: any) => void;
