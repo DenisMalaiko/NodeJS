@@ -1,19 +1,20 @@
-import { RequestHandler } from "../types/RequestHandler";
 import { RouterMap } from "../interfaces/RouterMap";
 
 const router: RouterMap = {};
 
-const addRoute = (method: string, path: string, handler: RequestHandler) => {
+const addRoute = (method: string, path: string, handler: any) => {
   const key = `${method.toUpperCase()} ${path}`;
   router[key] = handler;
 };
 
 const handleRoute = (req: any, res: any) => {
-  const key = `${req.method.toUpperCase()} ${req.url}`;
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const key = `${req.method.toUpperCase()} ${url.pathname}`;
   const handler = router[key];
+  const params = Object.fromEntries(url.searchParams);
 
   if (handler) {
-    handler(req, res);
+    handler(req, res, params);
   } else {
     res.statusCode = 404;
     res.setHeader("Content-Type", "text/plain");
