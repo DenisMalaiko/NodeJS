@@ -1,0 +1,10 @@
+### PUT request to example server
+PUT http://localhost:8080/updateUser
+Content-Type: application/json
+
+{
+  "id": "4",
+  "name": "Obana"
+}
+
+###
