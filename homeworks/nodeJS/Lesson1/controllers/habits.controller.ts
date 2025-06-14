@@ -1,13 +1,29 @@
-export async function handle(req: any, res: any, id: string) {
-  try {
-    console.group("TRY")
-    console.log("REQ ", req)
-    console.log("RES ", res)
-    console.log("ID ", id)
-    console.groupEnd()
+import * as service from "../services/habits.service.ts";
 
+export class HabitsController {
+  constructor() {}
 
-  } catch (error) {
-    console.log("ERR ", error)
+  async add(name: string, freq: string) {
+     return await service.addHabit(name, freq)
+  }
+
+  async update(id: string, name: string, freq: string) {
+    return await service.updateHabit(id, name, freq);
+  }
+
+  async done(id: string) {
+    return await service.doneHabit(id);
+  }
+
+  async delete(id: string) {
+    return await service.deleteHabit(id);
+  }
+
+  async list() {
+    return await service.listHabits();
+  }
+
+  async showStats() {
+    return await service.showStats();
   }
 }
