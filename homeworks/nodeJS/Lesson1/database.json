@@ -11,8 +11,32 @@
     "id": "mbwcfj1p-yc2i",
     "name": "Watching TV",
     "freq": "monthly",
+    "isDone": true,
+    "dateCreated": "2025-06-14T14:40:13.357Z",
+    "dateUpdated": "2025-06-14T14:42:39.759Z"
+  },
+  {
+    "id": "mbwvfj1p-yc2i",
+    "name": "Watching TV",
+    "freq": "monthly",
     "isDone": false,
     "dateCreated": "2025-06-14T14:40:13.357Z",
     "dateUpdated": "2025-06-14T14:42:39.759Z"
+  },
+  {
+    "id": "mbwdffh4-zoa1",
+    "name": "Smoking",
+    "freq": "daily",
+    "isDone": true,
+    "dateCreated": "2025-06-14T15:08:08.344Z",
+    "dateUpdated": "2025-06-14T15:10:04.164Z"
+  },
+  {
+    "id": "mbwfti3e-fqc1",
+    "name": "Smoking",
+    "freq": "daily",
+    "isDone": false,
+    "dateCreated": "2025-06-14T16:15:04.154Z",
+    "dateUpdated": "2025-06-14T16:15:04.154Z"
   }
 ]
