@@ -1,6 +1,5 @@
 import { parseArgs } from './utils/functions/parseCommands.ts';
 import { HabitsController } from './controllers/habits.controller.ts';
-import {Habit} from "./utils/models/Habit.ts";
 
 async function init() {
   const args = parseArgs(process.argv);
