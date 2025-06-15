@@ -26,3 +26,4 @@ loadEnv();
 
 // Твоя змінна з типобезпекою
 export const OFFSET_DAYS = parseInt(process.env.OFFSET_DAYS || '0');
+export const PAST_DAYS = parseInt(process.env.PAST_DAYS || '0');

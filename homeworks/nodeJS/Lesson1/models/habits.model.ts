@@ -1,6 +1,6 @@
 import { readDB, writeDB } from "../utils/functions/database.ts";
 import { Habit } from '../utils/models/Habit.ts';
-import { OFFSET_DAYS } from '../config.ts';
+import { OFFSET_DAYS, PAST_DAYS } from '../config.ts';
 
 export const addHabit = async (name: string, freq: string) => {
   try {
@@ -32,8 +32,9 @@ export const doneHabit = async (id: string) => {
     const db: Habit[] = await readDB();
     const index: number = db.findIndex((habit: Habit) => habit.id === id);
     const isDone: boolean = true;
+    const dateUpdated: Date = new Date();
     if (index === -1) return null;
-    db[index] = { ...db[index], isDone };
+    db[index] = { ...db[index], isDone, dateUpdated };
     await writeDB(db);
     return db[index];
   } catch(e) {
@@ -65,21 +66,18 @@ export const listHabits = async () => {
 export const showStats = async () => {
   try {
     const db: Habit[] = await readDB();
-    const today = new Date();
-    today.setDate(today.getDate() + OFFSET_DAYS);
 
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - PAST_DAYS);
+
+    const endDate = new Date();
+    endDate.setDate(endDate.getDate() + OFFSET_DAYS);
+
+    const filteredHabits = db.filter((habit) => new Date(habit.dateUpdated) >= startDate && new Date(habit.dateUpdated) <= endDate);
     const statsMap = new Map<string, { done: number; expected: number }>();
 
-    db.forEach(habit => {
-      const freq = habit.freq;
-      const updated = new Date(habit.dateUpdated);
-      const daysToCheck = freq === 'daily' ? 7 : freq === 'weekly' ? 28 : 30;
-
-      const cutoff = new Date(today);
-      cutoff.setDate(today.getDate() - daysToCheck);
-
-      const done = (habit.isDone && updated >= cutoff && updated <= today) ? 1 : 0;
-
+    filteredHabits.forEach(habit => {
+      const done = (habit.isDone) ? 1 : 0;
       const key = `${habit.name}__${habit.freq}`;
       const current = statsMap.get(key) || { done: 0, expected: 0 };
 
@@ -87,7 +85,7 @@ export const showStats = async () => {
         done: current.done + done,
         expected: current.expected + 1
       });
-    });
+    })
 
     const result: string[] = [];
 
