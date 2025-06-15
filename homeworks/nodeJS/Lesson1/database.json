@@ -38,5 +38,13 @@
     "isDone": false,
     "dateCreated": "2025-06-14T16:15:04.154Z",
     "dateUpdated": "2025-06-14T16:15:04.154Z"
+  },
+  {
+    "id": "mbxn2n44-mank",
+    "name": "Swimming",
+    "freq": "daily",
+    "isDone": true,
+    "dateCreated": "2025-06-15T12:25:54.052Z",
+    "dateUpdated": "2025-06-15T12:26:37.566Z"
   }
 ]
