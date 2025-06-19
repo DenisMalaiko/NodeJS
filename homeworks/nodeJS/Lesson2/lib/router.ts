@@ -33,9 +33,6 @@ function matchRoute(reqUrl: any) {
   const parsed = url.parse(reqUrl, true);
   const pathname: any = parsed.pathname;
 
-  console.log("ROUTE LIST ", routes)
-  console.log("PATHNAME ", pathname)
-
   for (const route of routes) {
     if (route.path.includes('[')) {
       const regex = new RegExp(`^${route.path.replace(/\[.*?\]/, '([^/]+)')}/?$`);
@@ -53,21 +50,22 @@ function matchRoute(reqUrl: any) {
 
 await loadRoutes(path.join(__dirname, '../routes'));
 
+
+
 export default async function router(req: any, res: any) {
   const matched = matchRoute(req.url);
-  console.log("START ROUTER ", req.url, matched)
-
 
   if (matched) {
     req.params = matched.params;
-
-    console.log("Matched params ", matched.params);
-
-    console.log("REQUEST params ", req.params);
-
-    await matched.handler(req, res);
+    try {
+      await matched.handler(req, res);
+    } catch(e) {
+      console.log("FAILED ON REQUEST")
+      res.writeHead(500);
+      res.end(e);
+    }
   } else {
     res.writeHead(404);
-    res.end('Not Found');
+    res.end('Route Not Found');
   }
 }

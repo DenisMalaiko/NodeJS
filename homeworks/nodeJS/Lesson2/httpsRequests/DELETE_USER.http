@@ -1,0 +1,6 @@
+### DELETE request to example server
+@id = 3
+DELETE http://localhost:3000/users/{{id}}
+Content-Type: application/json
+
+###
