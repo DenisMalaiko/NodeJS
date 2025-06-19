@@ -1,0 +1,6 @@
+### GET request to example server
+@id = 3
+GET http://localhost:3000/users/{{id}}
+Content-Type: application/json
+
+###

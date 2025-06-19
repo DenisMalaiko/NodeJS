@@ -1,0 +1,11 @@
+### PUT request to example server
+@id = 3
+PUT http://localhost:3000/users/{{id}}
+Content-Type: application/json
+
+{
+  "name": "Alex",
+  "age": "50"
+}
+
+###
