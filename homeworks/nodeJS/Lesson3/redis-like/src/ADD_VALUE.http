@@ -1,0 +1,9 @@
+### POST request to example server
+POST http://localhost:4000/set
+Content-Type: application/json
+
+{
+    "key": "foo",
+    "value": "bar"
+}
+###
