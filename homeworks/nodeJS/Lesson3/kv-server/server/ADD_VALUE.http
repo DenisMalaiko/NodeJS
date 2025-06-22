@@ -1,0 +1,9 @@
+### POST request to example server
+POST http://localhost:8080/kv
+Content-Type: application/json
+
+{
+  "key": "foo2",
+  "value": "bar2"
+}
+###

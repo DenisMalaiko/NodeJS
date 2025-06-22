@@ -3,10 +3,12 @@
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node --esm index.ts"
+    "start": "ts-node --esm src/index.ts",
+    "dockerBuild": "docker build -t redis .",
+    "dockerRun": "docker run -p 4000:4000 redis"
   },
   "author": "Denis Malaiko",
   "license": "ISC",

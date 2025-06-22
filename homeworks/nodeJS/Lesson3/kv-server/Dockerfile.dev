@@ -1,0 +1,21 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Встановлюємо nodemon глобально
+RUN npm install -g nodemon ts-node typescript
+
+# Копіюємо package.json і tsconfig.json
+COPY package.json tsconfig.json ./
+
+# Встановлюємо залежності
+RUN npm install
+
+# Копіюємо весь код
+COPY . .
+
+# Вказуємо порт
+EXPOSE 4000
+
+# Вказуємо запуск через ts-node + esm
+CMD ["nodemon", "--watch", "server", "--ext", "ts", "--exec", "node", "--loader", "ts-node/esm", "server/index.ts"]

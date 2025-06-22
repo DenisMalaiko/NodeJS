@@ -3,10 +3,12 @@
   "type": "module",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "server/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node --esm index.ts"
+    "start": "ts-node --esm server/index.ts",
+    "dockerBuild": "docker build -t kv-server .",
+    "dockerRun": "docker run -p 3000:3000 kv-server"
   },
   "author": "Denis Malaiko",
   "license": "ISC",
@@ -15,5 +17,9 @@
     "eslint": "^9.29.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/express": "^5.0.3",
+    "express": "^5.1.0"
   }
 }
