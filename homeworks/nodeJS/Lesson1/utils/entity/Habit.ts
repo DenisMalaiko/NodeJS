@@ -1,4 +1,4 @@
-import { generateId } from '../functions/parseCommands.ts';
+import { generateId } from '../functions/utils.ts';
 
 export class Habit {
   id: string;
