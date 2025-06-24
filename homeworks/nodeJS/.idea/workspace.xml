@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6b0fe1b6-9f6f-4072-be60-1877d412d3b7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Lesson4/package-lock.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lesson4/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Lesson4/tsconfig.json" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="lesson/Lesson2" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;DenisMalaiko&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/DenisMalaiko/NodeJS.git&quot;,
+    &quot;accountId&quot;: &quot;9ddae623-a088-49ac-9d86-b01ef22f6dc8&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2ymNn3eAlZWpXDQky98MJBIIfEI" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "lesson/Lesson3",
+    "junie.onboarding.icon.badge.shown": "true",
+    "last_opened_file_path": "/Applications/Localhost/Projects 2025/NodeJS/homeworks/nodeJS/Lesson4",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/Lesson4" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Node.js.asynchrony.js">
+    <configuration name="asynchrony.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/homeworks/js/asynchrony.js" working-dir="$PROJECT_DIR$/homeworks/js">
+      <method v="2" />
+    </configuration>
+    <configuration name="introduction2.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/homeworks/js/introduction2.js" working-dir="$PROJECT_DIR$/homeworks/js">
+      <method v="2" />
+    </configuration>
+    <configuration name="introduction.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/homeworks/js/introduction.js" working-dir="$PROJECT_DIR$/homeworks/js">
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Node.js.introduction2.js" />
+        <item itemvalue="Node.js.introduction.js" />
+        <item itemvalue="Node.js.asynchrony.js" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-f27c65a3e318-JavaScript-WS-251.23774.424" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6b0fe1b6-9f6f-4072-be60-1877d412d3b7" name="Changes" comment="" />
+      <created>1750435951450</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1750435951450</updated>
+      <workItem from="1750435952534" duration="55000" />
+      <workItem from="1750689666682" duration="781000" />
+      <workItem from="1750694487653" duration="107000" />
+      <workItem from="1750694596268" duration="36000" />
+      <workItem from="1750779316797" duration="119000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
