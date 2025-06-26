@@ -1,11 +1,11 @@
 import { createContainer, asClass } from 'awilix';
-import { BrewsModel } from '../models/brews.model.js';
-import { BrewsService } from '../services/brews.service.js';
-import { BrewsController } from '../controllers/brews.controller.js';
-import { objectMap } from "../utils/Object.map.js";
+import { BrewsModel } from './models/brews.model.js';
+import { BrewsService } from './services/brews.service.js';
+import { BrewsController } from './controllers/brews.controller.js';
+import { objectMap } from "./utils/Object.map.js";
 
 const brewsModule = {
-  brewsModule: BrewsModel,
+  brewsModel: BrewsModel,
   brewsService: BrewsService,
   brewsController: BrewsController
 }

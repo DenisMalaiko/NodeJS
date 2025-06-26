@@ -9,7 +9,9 @@ export class BrewsModel {
     }
 
     list() {
-        return [...this.#store.values()];
+        console.log("MODEL list")
+        return [{ name: "MODEL DATA" }]
+        //return [...this.#store.values()];
     }
 
     find(id) {
