@@ -6,6 +6,7 @@ export class BrewsService {
     }
 
     list() {
+        console.log("SERVICE list")
         return this.brewsModel.list();
     }
 

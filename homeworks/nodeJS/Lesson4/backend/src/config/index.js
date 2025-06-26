@@ -1,11 +1,8 @@
 import 'dotenv/config';
-/*
-import pkg from '../../package.json' assert { type: 'json' }; // Import version from package.json
-*/
+//import pkg from '../../package.json' assert { type: 'json' }; // Import version from package.json
 
 import { z } from 'zod';
 
-/*
 const DEFAULT_PORT = 3000;
 const DEFAULT_ENV  = 'development';
 
@@ -24,4 +21,4 @@ export const config = {
   baseUrl: `http://localhost:${parsed.PORT}`,
   appName: 'Express API',
   //appVersion: pkg.vesrion,
-};*/
+};

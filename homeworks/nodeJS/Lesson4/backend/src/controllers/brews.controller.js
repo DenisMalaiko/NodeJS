@@ -7,6 +7,7 @@ export class BrewsController {
     }
 
     list(_req, res) {
+        console.log("CONTROLLER list")
         return res.json(this.brewService.list());
     }
 

@@ -1,18 +1,12 @@
 import http from 'node:http';
 import { createApp } from './app.js';
-/*import { config } from '../config/index.js';*/
+import { config } from './config/index.js';
 
 const app = createApp();
 const server = http.createServer(app);
 
-//console.log("Config ", config)
-
-/*server.listen(config.port, () =>
+server.listen(config.port, () =>
   console.log(`🚀 ${config.env} API ready on http://localhost:${config.port}`)
-);*/
-
-server.listen(3000, () =>
-    console.log(`🚀 development API ready on http://localhost:3000`)
 );
 
 function shutDown() {
