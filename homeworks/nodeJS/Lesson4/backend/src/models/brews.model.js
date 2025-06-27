@@ -8,10 +8,17 @@ export class BrewsModel {
         console.log(`BrewModel initialized`);
     }
 
-    list() {
-        console.log("MODEL list")
-        return [{ name: "MODEL DATA" }]
-        //return [...this.#store.values()];
+    list(queryParams) {
+        const method = queryParams?.method ?? null;
+        const ratingMin = queryParams.ratingMin ?? null;
+
+        const data = [...this.#store.values()];
+
+        const result = data
+            .filter(brew => method ? brew.method === method : brew.method)
+            .filter(brew => ratingMin ? brew.rating >= ratingMin : brew.rating)
+
+        return result;
     }
 
     find(id) {
@@ -20,16 +27,16 @@ export class BrewsModel {
 
     create(dto) {
         const id = nanoid(8);
-        const user = {id, ...dto};
-        this.#store.set(id, user);
-        return user;
+        const brew = {id, ...dto};
+        this.#store.set(id, brew);
+        return brew;
     }
 
     update(id, dto) {
         if (!this.#store.has(id)) return null;
-        const user = {id, ...dto};
-        this.#store.set(id, user);
-        return user;
+        const brew = {id, ...dto};
+        this.#store.set(id, brew);
+        return brew;
     }
 
     delete(id) {

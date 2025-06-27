@@ -1,0 +1,12 @@
+### PUT request to example server
+@id = gUupihWD
+PUT http://localhost:3000/api/brews/{{id}}
+Content-Type: application/json
+
+{
+  "beans": "Brew (Edited 222)",
+  "method":  "espresso",
+  "rating": 5,
+  "notes": "Description"
+}
+###

@@ -5,9 +5,8 @@ export class BrewsService {
         this.brewsModel = brewsModel;
     }
 
-    list() {
-        console.log("SERVICE list")
-        return this.brewsModel.list();
+    list(queryParams) {
+        return this.brewsModel.list(queryParams);
     }
 
     getOne(id) {
@@ -23,6 +22,6 @@ export class BrewsService {
     }
 
     delete(id) {
-        return this.brewsModel.remove(id);
+        return this.brewsModel.delete(id);
     }
 }
