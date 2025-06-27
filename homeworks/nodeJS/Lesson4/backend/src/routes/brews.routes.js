@@ -16,33 +16,36 @@ const paramsSchema = z.object({
     id: z.string().describe('Brew ID')
 });
 
-/*router.get('/brews', (req, res) => {
-    ctl('list');
-
-    /!*res.json({
-        message: 'Hello World'
-    });*!/
-});*/
-
 router.get(
     '/brews',
     ctl('list')
 );
 
-registry.registerPath({
-    method: 'get',
-    path: '/api/brews',
-    tags: ['Brews'],
-    responses: {
-        200: {
-            description: 'Array of brews',
-            content: {'application/json': {schema: z.array(BrewDTO)}}
-        }
-    }
-})
+router.get(
+    '/brews/:id',
+    validateParams(paramsSchema),
+    ctl('item')
+);
 
-/*
-router.get('/brews/:id', validateParams(paramsSchema), ctl('item'));
-*/
+router.post(
+    '/brews',
+    validate(BrewDTO),
+    asyncHandler(ctl('create'))
+);
+
+
+router.put(
+    '/brews/:id',
+    validateParams(paramsSchema),
+    validate(BrewDTO),
+    asyncHandler(ctl('update'))
+);
+
+
+router.delete(
+    '/brews/:id',
+    asyncHandler(ctl('delete'))
+);
+
 
 export {router};

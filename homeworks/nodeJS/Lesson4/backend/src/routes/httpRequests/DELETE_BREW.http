@@ -1,0 +1,6 @@
+### DELETE request to example server
+@id = gUupihWD
+DELETE http://localhost:3000/api/brews/{{id}}
+Content-Type: application/json
+
+###

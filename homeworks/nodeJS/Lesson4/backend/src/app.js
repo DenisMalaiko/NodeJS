@@ -63,7 +63,6 @@ export function createApp() {
   // API-маршрути (REST + валідація + DI)
   // •  /api/brews      CRUD через BrewsController
   // •  Всі роути всередині вже мають validate(BrewsDTO) і asyncHandler.
-  console.log("ROUTE BREWS ", brewsRouter);
   app.use('/api', brewsRouter);
 
   // 404 «Маршрут не знайдено»
