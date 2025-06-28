@@ -1,6 +1,7 @@
 export class BrewsService {
-    static scope = 'scoped'; // <- вказуємо, що це Scoped Service
-    constructor(brewsModel) {          // <- інжектовано модель
+    static scope = 'scoped';
+
+    constructor(brewsModel) {
         console.log(`BrewsService initialized`);
         this.brewsModel = brewsModel;
     }

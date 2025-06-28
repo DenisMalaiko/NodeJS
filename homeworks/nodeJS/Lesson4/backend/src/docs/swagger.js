@@ -6,5 +6,5 @@ export const jsdocSpec = swaggerJSDoc({
     openapi: '3.0.0',
     info: { title: config.appName},
   },
-  apis: ['./src/routes/**/*.js']           // JSDoc-коментарі у роутерах
+  apis: ['./src/routes/**/*.js']
 });

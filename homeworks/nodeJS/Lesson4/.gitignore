@@ -5,3 +5,5 @@ backend/uploads/*
 !backend/uploads/.gitkeep
 
 build
+
+node_modules

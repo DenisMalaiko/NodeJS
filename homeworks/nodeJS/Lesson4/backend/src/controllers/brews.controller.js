@@ -16,6 +16,7 @@ export class BrewsController {
     }
 
     create(req, res) {
+        console.log("START CREATING ", req.body);
         return res.status(201).json(this.brewService.create(req.body));
     }
 
