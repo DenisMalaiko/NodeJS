@@ -14,14 +14,14 @@ await build({
   platform    : 'node',
   target      : 'node20',
   outfile     : path.join(outDir, 'server.mjs'),
-  /* мінімізуємо код і пробіли, але ЗБЕРІГАЄМО ідентифікатори */
   minifySyntax: true,
   minifyWhitespace: true,
-  minifyIdentifiers: false,   // без імен змінних/функцій не буде працювати injectionMode: 'CLASSIC'
+  minifyIdentifiers: false,
   treeShaking : true,
   legalComments: 'none',
 
-  /* 🪄 додаємо require, module, __dirname, __filename */
+
+  sourcemap: false,
   banner: {
     js: `
 import { createRequire } from 'node:module';

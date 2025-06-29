@@ -1,5 +1,5 @@
 import 'dotenv/config';
-//import pkg from '../../package.json' assert { type: 'json' }; // Import version from package.json
+import pkg from '../../package.json' assert { type: 'json' };
 
 import { z } from 'zod';
 
@@ -20,5 +20,5 @@ export const config = {
   env:  parsed.NODE_ENV,
   baseUrl: `http://localhost:${parsed.PORT}`,
   appName: 'Express API',
-  //appVersion: pkg.vesrion,
+  appVersion: pkg.vesrion,
 };

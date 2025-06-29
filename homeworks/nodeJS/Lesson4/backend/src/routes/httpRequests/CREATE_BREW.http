@@ -1,8 +1,0 @@
-### POST request to example server
-POST http://localhost:3000/api/brews
-Content-Type: application/json
-
-{
-  "beans": "TEST"
-}
-###

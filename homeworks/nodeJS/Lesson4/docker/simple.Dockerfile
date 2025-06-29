@@ -1,14 +1,18 @@
+# docker/simple.Dockerfile
 FROM node:20
 
 WORKDIR /app
 
-COPY ../backend/package*.json backend/
+# ── 1. копіюємо маніфести для кешу ───────────────────────────────
+COPY backend/package*.json   backend/
 
-RUN npm ci
+# ── 2. встановлюємо залежності підпроєктів окремо ────────────────
+RUN npm --prefix backend  install
 
-COPY ../backend  backend
+# ── 3. копіюємо решту коду (JS, TS, assets…) ─────────────────────
+COPY backend   backend/
 
-RUN npm --prefix backend run build
-
+# ── 4. стартуємо API-сервер ──────────────────────────────────────
 EXPOSE 3000
-CMD ["node", "backend/dist/server.min.js"]
+
+CMD ["node", "backend/src/server.js"]

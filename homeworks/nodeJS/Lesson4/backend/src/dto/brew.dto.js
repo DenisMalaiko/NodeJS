@@ -5,5 +5,5 @@ export const BrewDTO = z.object({
   method: z.enum(['v60', 'aeropress', 'chemex', 'espresso']).optional(),
   rating: z.number().min(1).max(5).optional(),
   notes: z.string().max(200).optional(),
-  brewedAt: z.date().optional(),
+  brewedAt: z.preprocess((val) => val ? new Date(val) : undefined, z.date()).optional(),
 });

@@ -9,3 +9,5 @@ build
 # інше зайве
 .git
 *.log
+
+.idea

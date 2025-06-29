@@ -12,11 +12,9 @@ import rateLimit from 'express-rate-limit';
 
 const router = Router();
 const ctl = makeClassInvoker(BrewsController);
-
 const paramsSchema = z.object({
     id: z.string().describe('Brew ID')
 });
-
 const postLimiter = rateLimit({
     windowMs: 60_000,
     max: 10,
@@ -25,10 +23,7 @@ const postLimiter = rateLimit({
     message: 'Забагато POST-запитів. Спробуйте через хвилину.',
 });
 
-router.get(
-    '/brews',
-    ctl('list')
-);
+router.get('/brews', ctl('list'));
 registry.registerPath({
     method: 'get',
     path: '/api/brews',
@@ -41,11 +36,7 @@ registry.registerPath({
     }
 });
 
-router.get(
-    '/brews/:id',
-    validateParams(paramsSchema),
-    ctl('item')
-);
+router.get('/brews/:id', validateParams(paramsSchema), ctl('item'));
 registry.registerPath({
     method: 'get',
     path: '/api/brews/{id}',
@@ -57,13 +48,7 @@ registry.registerPath({
     }
 });
 
-
-router.post(
-    '/brews',
-    postLimiter,
-    validate(BrewDTO),
-    asyncHandler(ctl('create'))
-);
+router.post('/brews', postLimiter, validate(BrewDTO), asyncHandler(ctl('create')));
 registry.registerPath({
     method: 'post',
     path: '/api/brews',
@@ -75,15 +60,9 @@ registry.registerPath({
         201: {description: 'Created', content: {'application/json': {schema: BrewDTO}}},
         400: {description: 'Validation error'}
     }
-})
+});
 
-
-router.put(
-    '/brews/:id',
-    validateParams(paramsSchema),
-    validate(BrewDTO),
-    asyncHandler(ctl('update'))
-);
+router.put('/brews/:id', validateParams(paramsSchema), validate(BrewDTO), asyncHandler(ctl('update')));
 registry.registerPath({
     method: 'put',
     path: '/api/brews/{id}',
@@ -99,10 +78,7 @@ registry.registerPath({
     }
 })
 
-router.delete(
-    '/brews/:id',
-    asyncHandler(ctl('delete'))
-);
+router.delete('/brews/:id', asyncHandler(ctl('delete')));
 registry.registerPath({
     method: 'delete',
     path: '/api/brews/{id}',
