@@ -1,5 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Tea } from '../../entities/tea.entity';
+import { Tea } from '../common/entities/tea.entity';
+import { CreateTeaDtoType, UpdateTeaDtoType } from '../common/dto/tea.dto';
+import { TeaQueryParamsDtoType } from '../common/dto/tea-query-params.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class TeaService {
@@ -7,7 +10,7 @@ export class TeaService {
   constructor() {
     this.teas = [
       {
-        id: Date.now().toString(),
+        id: uuid(),
         name: 'Green',
         origin: 'China',
         rating: 4,
@@ -15,7 +18,7 @@ export class TeaService {
         notes: 'A good tea',
       },
       {
-        id: (Date.now() + 1000).toString(),
+        id: uuid(),
         name: 'Black',
         origin: 'India',
         rating: 3,
@@ -24,14 +27,68 @@ export class TeaService {
       },
     ];
   }
-  getAll(minRating: string): Tea[] {
-    return this.teas.filter((tea: Tea) =>
-      minRating ? tea.rating >= Number(minRating) : true,
-    );
+  getAll(query: TeaQueryParamsDtoType) {
+    return new Promise((resolve, reject) => {
+      const { minRating, page, pageSize } = query;
+
+      try {
+        const filtered = this.teas.filter((tea: Tea) =>
+          minRating ? tea.rating >= Number(minRating) : true,
+        );
+
+        const total = filtered.length;
+        const start = (page - 1) * pageSize;
+        const data = filtered.slice(start, start + pageSize);
+
+        resolve({
+          data,
+          total,
+          page,
+          pageSize,
+        });
+
+      } catch (error) {
+        reject(error);
+      }
+    });
   }
-  getById(id: string): Tea {
-    const tea: Tea | undefined = this.teas.find((tea: Tea) => tea.id === id);
-    if(!tea) throw new NotFoundException('Tea not found');
-    return tea;
+  getById(id: string): Promise<Tea> {
+    return new Promise((resolve, reject) => {
+      const tea = this.teas.find((tea: Tea) => tea.id === id);
+      if (!tea) {
+        return reject(new NotFoundException('Tea not found'));
+      }
+      resolve(tea);
+    });
+  }
+
+  create(data: CreateTeaDtoType): Promise<Tea> {
+    return new Promise((resolve) => {
+      const newTea = { id: uuid(), ...data };
+      this.teas.push(newTea);
+      resolve(newTea);
+    });
+  }
+
+  update(id: string, data: UpdateTeaDtoType): Promise<Tea> {
+    return new Promise((resolve, reject) => {
+      const tea = this.teas.find((t) => t.id === id);
+      if (!tea) {
+        return reject(new NotFoundException('Tea not found'));
+      }
+      Object.assign(tea, data);
+      resolve(tea);
+    });
+  }
+
+  delete(id: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const index = this.teas.findIndex((t) => t.id === id);
+      if (index === -1) {
+        return reject(new NotFoundException('Tea not found'));
+      }
+      this.teas.splice(index, 1);
+      resolve();
+    });
   }
 }

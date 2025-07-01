@@ -12,7 +12,6 @@ export class Tea {
     brewTemp: number,
     notes: string,
   ) {
-    this.id = new Date().toISOString();
     this.name = name;
     this.origin = origin;
     this.rating = rating;
