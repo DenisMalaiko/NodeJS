@@ -2,12 +2,7 @@ import http from "node:http";
 import router from './lib/router.js';
 
 const server = http.createServer((req: any, res) => {
-  const [ , resource ] = req.url.split('/');
-  if (resource === 'users') {
-    return router(req, res);
-  }
-
-  res.writeHead(404).end('Route not found');
+  return router(req, res);
 });
 
 server.listen(3000, () => {
