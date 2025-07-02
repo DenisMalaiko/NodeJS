@@ -15,7 +15,7 @@ RUN npm install
 COPY . .
 
 # Вказуємо порт
-EXPOSE 4000
+EXPOSE 3000
 
 # Вказуємо запуск через ts-node + esm
 CMD ["nodemon", "--watch", "server", "--ext", "ts", "--exec", "node", "--loader", "ts-node/esm", "server/index.ts"]

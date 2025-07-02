@@ -6,7 +6,9 @@ services:
         aliases: [ "redis" ]
 
   kv:
-    build: ./kv-server
+    build:
+      context: ./kv-server
+      dockerfile: Dockerfile.dev
     ports: [ "8080:3000" ]
     environment:
       REDIS_URL: http://redis:4000
