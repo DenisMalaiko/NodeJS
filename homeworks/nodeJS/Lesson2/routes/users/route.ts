@@ -53,7 +53,6 @@ export default async function (req: any, res: any) {
     });
   }
 
-
   else {
     res.writeHead(405);
     res.end('Method Not Allowed');
