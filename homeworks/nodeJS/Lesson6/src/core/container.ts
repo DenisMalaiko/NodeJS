@@ -11,14 +11,18 @@ export class Container {
       throw new Error(`Token ${token.name} is not registered.`);
     }
 
-    const deps: any[] = Reflect.getMetadata("design:paramtypes", token) || [];
+    const paramTypes: any[] = Reflect.getMetadata("design:paramtypes", token) || [];
+    const injectParams: { index: number; token: any }[] = Reflect.getMetadata("mini:inject_params", token) || [];
 
-    const resolved = new cs(...deps.map(d => {
-      if(d === token) {
+    const resolved = new cs(...paramTypes.map((type, index) => {
+      const custom = injectParams.find(p => p.index === index);
+      const depToken = custom?.token || type;
+
+      if(depToken === token) {
         throw new Error(`Circular dependency detected for token ${token.name}.`);
       }
 
-      return this.resolve(d)
+      return this.resolve(depToken);
     }));
 
     this.#singletons.set(token, resolved);
