@@ -47,8 +47,6 @@ export async function runGuards(
 ): Promise<boolean | string> {
   const guards = getGuards(handler, controllerClass, globalGuards);
 
-  console.log({guards})
-
   for (const GuardCtor of guards) {
     // інстанціюємо через IoC (підтримка @Injectable() всередині Guard-а)
     const guardInstance = container.resolve<any>(GuardCtor);
@@ -57,7 +55,7 @@ export async function runGuards(
     const ctx = new ExpressExecutionContext(controllerClass, handler, req, res);
 
     const can = await Promise.resolve( guardInstance.canActivate(ctx) );
-    console.log({can, GuardCtor})
+
     if (!can) return GuardCtor.name;
   }
   return true;
