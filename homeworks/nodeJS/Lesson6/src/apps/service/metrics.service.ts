@@ -7,6 +7,7 @@ export class MetricsService {
   store(methodName: string) {
     const prev = this.#counters.get(methodName) || 0;
     this.#counters.set(methodName, prev + 1);
+    console.log("[ INJECT SERVICE ]")
     console.table(Object.fromEntries(this.#counters));
   }
 }

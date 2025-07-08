@@ -19,19 +19,25 @@ export class BooksService {
 
   findAll() {
     this.metrics.store('GET /books');
-    return this.#data;
+    return {
+      data: this.#data
+    };
   }
 
   findOne(id: string) {
     this.metrics.store(`GET /book/${id}`);
-    return this.#data.find(b => b.id === id);
+    return {
+      data: this.#data.find(b => b.id === id)
+    };
   }
 
   create(data: { title: string }) {
     const book = { id: Date.now().toString(), title: data.title };
     this.#data.push(book);
     this.metrics.store('POST /book');
-    return book;
+    return {
+      data: book
+    };
   }
 
   delete(id: string) {
@@ -39,6 +45,8 @@ export class BooksService {
     if (index === -1) return null;
     const [deleted] = this.#data.splice(index, 1);
     this.metrics.store(`DELETE /book/${id}`);
-    return deleted;
+    return {
+      data: deleted
+    };
   }
 }

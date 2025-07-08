@@ -12,6 +12,7 @@ export class RolesGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
 
   canActivate(ctx: ExecutionContext) {
+    console.log("[ GUARD ] ")
     const allowed = this.reflector.getAllAndOverride<string[]>(
       ROLES_KEY,
       [ctx.getHandler(), ctx.getClass()],
