@@ -25,6 +25,11 @@ export class BooksController {
     return this.bookService.findAll();
   }
 
+  @Get("/:id")
+  findOne(@Params("id") id: string) {
+    return this.bookService.findOne(id);
+  }
+
   @Post()
   @UsePipes(new ZodValidationPipe(createBookSchema))
   create(@Body() data: any) {

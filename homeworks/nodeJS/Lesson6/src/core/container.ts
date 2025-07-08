@@ -14,9 +14,6 @@ export class Container {
 
     const deps: any[] = Reflect.getMetadata("design:paramtypes", token) || [];
     const InjectToken = Reflect.getMetadata("mini:inject_token", token) || [];
-    console.log("--------")
-    console.log("GET INJECT TOKEN: ", InjectToken)
-    console.log("--------")
 
     const resolved = new cs(...deps.map((d, index) => {
       const injectToken = InjectToken[index] || d;
