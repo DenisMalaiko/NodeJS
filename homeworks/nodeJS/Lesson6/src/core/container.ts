@@ -6,23 +6,26 @@ export class Container {
 
   resolve<T>(token: new (...args: any[]) => T): T {
     if (this.#singletons.has(token)) return this.#singletons.get(token);
+
     const cs = this.#registered.get(token);
     if(!cs) {
       throw new Error(`Token ${token.name} is not registered.`);
     }
 
-    const paramTypes: any[] = Reflect.getMetadata("design:paramtypes", token) || [];
-    const injectParams: { index: number; token: any }[] = Reflect.getMetadata("mini:inject_params", token) || [];
+    const deps: any[] = Reflect.getMetadata("design:paramtypes", token) || [];
+    const InjectToken = Reflect.getMetadata("mini:inject_token", token) || [];
+    console.log("--------")
+    console.log("GET INJECT TOKEN: ", InjectToken)
+    console.log("--------")
 
-    const resolved = new cs(...paramTypes.map((type, index) => {
-      const custom = injectParams.find(p => p.index === index);
-      const depToken = custom?.token || type;
+    const resolved = new cs(...deps.map((d, index) => {
+      const injectToken = InjectToken[index] || d;
 
-      if(depToken === token) {
+      if(injectToken === token) {
         throw new Error(`Circular dependency detected for token ${token.name}.`);
       }
 
-      return this.resolve(depToken);
+      return this.resolve(d)
     }));
 
     this.#singletons.set(token, resolved);

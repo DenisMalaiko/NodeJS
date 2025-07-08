@@ -1,9 +1,13 @@
+const TOKEN_KEY = 'mini:inject_token';
+
 export function Inject(token: any): ParameterDecorator {
+
   return (target, propertyKey, parameterIndex) => {
-    const existingInjectedParams = Reflect.getMetadata('mini:inject_params', target) || [];
 
-    existingInjectedParams.push({ index: parameterIndex, token });
+    const existingInjectToken = Reflect.getMetadata(TOKEN_KEY, target) || [];
 
-    Reflect.defineMetadata('mini:inject_params', existingInjectedParams, target);
+    existingInjectToken.push({ index: parameterIndex, token });
+
+    Reflect.defineMetadata(TOKEN_KEY, existingInjectToken, target);
   };
 }

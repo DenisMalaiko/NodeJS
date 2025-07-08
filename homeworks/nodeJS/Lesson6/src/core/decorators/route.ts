@@ -1,4 +1,3 @@
-import { RequestHandler } from 'express';
 type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export function Route(method: Method, path = '') {
@@ -9,6 +8,6 @@ export function Route(method: Method, path = '') {
   };
 }
 
-/* sugar helpers */
 export const Get = (p = '') => Route('get', p);
 export const Post = (p = '') => Route('post', p);
+export const Delete = (path = '') => Route('delete', path);
