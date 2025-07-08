@@ -3,10 +3,6 @@ import { HttpException } from '../../core/http/http-exception';
 @UsePipes()
 export class HttpExceptionFilter {
   catch(err: any, res: any) {
-    console.log("------")
-    console.log("FILTER")
-    console.log("------")
-
     if (err instanceof HttpException) {
       res.statusCode = err.status;
       res.end(JSON.stringify({ message: err.message }));
