@@ -6,3 +6,4 @@ export * from './params';
 export * from './route';
 export * from './use-pipes';
 export * from './use-guards';
+export * from './set-metadata';

@@ -15,4 +15,4 @@ COPY ./src ./src
 EXPOSE 4000
 
 # Вказуємо запуск через ts-node + esm
-CMD ["node", "--loader", "ts-node/esm", "src/index.ts"]
+CMD ["node", "--loader", "ts-node/esm", "src/server.ts"]

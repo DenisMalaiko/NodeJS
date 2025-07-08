@@ -5,4 +5,4 @@ This project demonstrates a basic HTTP server written in TypeScript using Node.j
 ## 🚀 How to Run
 
 1. Install dependencies: ```npm install```
-2. Run server: ```npx ts-node --esm index.ts```
+2. Run server: ```npx ts-node --esm server.ts```
