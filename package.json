@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/DenisMalaiko/NodeJS/issues"
   },
-  "homepage": "https://github.com/DenisMalaiko/NodeJS#readme"
+  "homepage": "https://github.com/DenisMalaiko/NodeJS#readme",
+  "dependencies": {
+    "sharp": "^0.34.3"
+  }
 }

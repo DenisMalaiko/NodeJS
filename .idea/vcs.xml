@@ -4,5 +4,6 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/homeworks/nodeJS/Lesson5/tea-tracker" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/homeworks/nodeJS/Lesson6" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/homeworks/nodeJS/Lesson8/mini-zipper" vcs="Git" />
   </component>
 </project>
