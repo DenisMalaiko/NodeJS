@@ -1,71 +1,89 @@
-import fs from 'fs';
+import { fileURLToPath, pathToFileURL } from 'url';
 import path from 'path';
-import url from 'url';
-import { fileURLToPath } from 'url';
+import { readdir, stat } from 'fs/promises';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const routes: any = [];
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const routesDir = path.join(__dirname, '../routes');
 
-async function loadRoutes(dir: any, base = '/') {
-  const files = fs.readdirSync(dir);
+export const router = async(req: any, res: any) => {
+  try {
+    const [pathStr] = req.url.split('?');
+    const segments = pathStr.split('/').filter((s: any) => s.length > 0);
 
-  for (const file of files) {
-    const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
+    console.log('pathStr: ', pathStr);
 
-    if (stat.isDirectory()) {
-      await loadRoutes(fullPath, path.join(base, file));
-    } else if (file === 'route.ts') {
-      const routePath = base.replace(/\\|\//g, '/');
-      const module = await import(fullPathToFileUrl(fullPath));
-      routes.push({ path: routePath, handler: module.default });
+    if (segments.length === 0) {
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not Found' }));
+      return;
     }
-  }
-}
 
-function fullPathToFileUrl(filePath: any) {
-  const resolvedPath = path.resolve(filePath);
-  const urlPath = resolvedPath.replace(/\\/g, '/');
-  return url.pathToFileURL(urlPath).href;
-}
+    let currentDir = routesDir;
+    req.params = {};
 
-function matchRoute(reqUrl: any) {
-  const parsed = url.parse(reqUrl, true);
-  const pathname: any = parsed.pathname;
-
-  for (const route of routes) {
-    if (route.path.includes('[')) {
-      const regex = new RegExp(`^${route.path.replace(/\[.*?\]/, '([^/]+)')}/?$`);
-      const match = pathname.match(regex);
-      if (match) {
-        return { handler: route.handler, params: { id: match[1] } };
+    for (const segment of segments) {
+      let entries;
+      try {
+        entries = await readdir(currentDir, { withFileTypes: true });
+      } catch (error) {
+        console.error(error);
+        res.writeHead(404, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Not Found' }));
+        return;
       }
-    } else if (pathname === route.path || pathname === route.path + '/') {
-      return { handler: route.handler, params: {} };
+
+      const staticMatch = entries.find(e => e.isDirectory() && e.name === segment);
+      if (staticMatch) {
+        currentDir = path.join(currentDir, staticMatch.name);
+        continue;
+      }
+
+      const dynamicMatch = entries.find(e => e.isDirectory() && e.name.startsWith('[') && e.name.endsWith(']'));
+      console.log('dynamicMatch: ', dynamicMatch);
+      if (dynamicMatch) {
+        const paramName = dynamicMatch.name.slice(1, -1);
+        req.params[paramName] = segment;
+        console.log('req.params: ', req.params);
+        currentDir = path.join(currentDir, dynamicMatch.name);
+        continue;
+      }
+
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not Found' }));
+      return;
     }
-  }
 
-  return null;
-}
+    const routeFilePath = path.join(currentDir, 'route.ts');
+    console.log('routeFilePath: ', routeFilePath);
 
-await loadRoutes(path.join(__dirname, '../routes'));
-
-
-
-export default async function router(req: any, res: any) {
-  const matched = matchRoute(req.url);
-
-  if (matched) {
-    req.params = matched.params;
     try {
-      await matched.handler(req, res);
-    } catch(e) {
-      console.log("FAILED ON REQUEST")
-      res.writeHead(500);
-      res.end(e);
+      await stat(routeFilePath);
+    } catch (error) {
+      console.error(`Route file not found: ${routeFilePath}`, error);
+      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Not Found' }));
+      return;
     }
-  } else {
-    res.writeHead(404);
-    res.end('Route Not Found');
+
+    const routeModule = await import(pathToFileURL(routeFilePath).href);
+
+    const method = req.method.toUpperCase();
+    const handler = routeModule[method];
+    if (typeof handler !== 'function') {
+      const allowedMethods = Object.keys(routeModule).filter(key =>['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'].includes(key) && typeof routeModule[key] === 'function');
+      res.writeHead(405, { 'Content-Type': 'application/json' });
+      res.setHeader('Allow', allowedMethods.join(', '));
+      res.end(JSON.stringify({ error: 'Method Not Allowed' }));
+      return;
+    }
+
+    await handler(req, res);
+  } catch (err) {
+    console.error('Internal server error:', err);
+    if (!res.headersSent) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: 'Internal Server Error' }));
+    }
   }
-}
+};

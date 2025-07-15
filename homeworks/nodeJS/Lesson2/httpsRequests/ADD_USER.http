@@ -3,9 +3,7 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "id": "3",
-  "name": "Eddie",
-  "age": "40"
+  "name": "Denis"
 }
 
 ###
