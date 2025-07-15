@@ -1,12 +1,10 @@
-import http from "node:http";
-import router from './lib/router.js';
+import { createServer } from 'http';
+import { router } from './lib/router.js';
 
-const server = http.createServer((req: any, res) => {
-  return router(req, res);
+const PORT = process.env.PORT || 3000;
+
+const server = createServer(router);
+
+server.listen(PORT, () => {
+  console.log(`Server created. Port ${PORT}`);
 });
-
-server.listen(3000, () => {
-  console.log("Server is running on port 3000");
-});
-
-

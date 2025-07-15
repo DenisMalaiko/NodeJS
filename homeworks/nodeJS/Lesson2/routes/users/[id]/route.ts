@@ -1,106 +1,62 @@
-import * as usersService from "../../../services/users.service.ts";
+import { getUserById, updateUser, deleteUser } from '../../../services/users.service.js';
 
-export default async function (req: any, res: any) {
+export const GET = async(req: any, res: any) => {
+  const userId = req.params.id;
+  const user = await getUserById(userId);
+  if (!user) {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'User not found' }));
+    return;
+  }
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(user));
+};
 
-  if (req.method === 'GET' && req.params.id) {
-    try {
-      const user = await usersService.getUser(req.params.id);
-
-      if (!user) {
-        res.statusCode = 404;
-        res.end(JSON.stringify({
-          status: 404,
-          error: 'User Is Not Found In DB'
-        }));
-      }
-
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(user));
-    } catch (error: any) {
-
-      if(error.status === 500) {
-        res.statusCode = 500;
-        res.end(JSON.stringify({
-          error: 'Internal Server Error',
-          status: 500
-        }));
-      }
-
-      res.statusCode = 404;
-      res.end(JSON.stringify({error: 'User Is Not Found In DB'}));
-    }
+export const PUT = async(req: any, res: any) => {
+  const userId = req.params.id;
+  let body = '';
+  for await (const chunk of req) {
+    body += chunk;
+  }
+  let updates;
+  try {
+    updates = JSON.parse(body);
+  } catch (err) {
+    console.error(err);
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid JSON' }));
+    return;
+  }
+  if ('id' in updates) {
+    delete updates.id;
+  }
+  if ('createdAt' in updates) {
+    delete updates.createdAt;
+  }
+  if (!updates.name || typeof updates.name !== 'string') {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Name is required to update' }));
+    return;
   }
 
-  else if (req.method === 'PUT' && req.params.id) {
-    let body = '';
-    req.on('data', (chunk: any) => body += chunk);
-    req.on('end', async () => {
-      try {
-        const user = JSON.parse(body);
-        const updatedUser = await usersService.updateUser(req.params.id, user);
-
-        if (!updatedUser) {
-          res.statusCode = 404;
-          res.end(JSON.stringify({
-            status: 404,
-            error: 'User Is Not Found In DB'
-          }));
-        }
-
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify(updatedUser));
-      } catch (error: any) {
-
-        if(error.status === 500) {
-          res.statusCode = 500;
-          res.end(JSON.stringify({
-            error: 'Internal Server Error',
-            status: 500
-          }));
-        }
-
-        res.statusCode = 404;
-        res.end(JSON.stringify({error: 'User Is Not Found In DB'}));
-      }
-    })
+  const updatedUser = await updateUser(userId, updates);
+  if (!updatedUser) {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'User not found' }));
+    return;
   }
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(updatedUser));
+};
 
-  else if (req.method === 'DELETE' && req.params.id) {
-    try {
-      const response: any = await usersService.deleteUser(req.params.id)
-
-      if (response.status !== 200) {
-        res.statusCode = 404;
-        res.end(JSON.stringify({
-          status: 404,
-          error: 'User Is Not Found In DB'
-        }));
-      }
-
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(response));
-    } catch (error: any) {
-
-      if(error.status === 500) {
-        res.statusCode = 500;
-        res.end(JSON.stringify({
-          error: 'Internal Server Error',
-          status: 500
-        }));
-      }
-
-      res.statusCode = 404;
-      res.end(JSON.stringify({error: 'User Is Not Found In DB'}));
-    }
+export async function DELETE(req: any, res: any) {
+  const userId = req.params.id;
+  const deleted = await deleteUser(userId);
+  if (!deleted) {
+    res.writeHead(404, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'User not found' }));
+    return;
   }
-
-  else if(!req.params.id) {
-    res.statusCode = 400;
-    res.end(JSON.stringify({error: 'Error On Adding User To DB'}));
-  }
-
-  else {
-    res.writeHead(405);
-    res.end('Method Not Allowed');
-  }
+  res.writeHead(204);
+  res.end();
 }

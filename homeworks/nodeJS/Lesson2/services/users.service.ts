@@ -1,78 +1,76 @@
-import { readDB, writeDB } from "../helpers/database.ts";
+import { readFile, writeFile } from 'fs/promises';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-export const getUsers = async () => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dbPath = path.join(__dirname, '../database.json');
+
+const _readDatabase = async() => {
   try {
-    return await readDB();
-  } catch(e) {
-    const error = new Error("SERVER ERROR") as any;
-    error.status = 500;
-    throw error;
+    const data = await readFile(dbPath, 'utf-8');
+    return JSON.parse(data);
+  } catch (err) {
+    console.error(err);
+    return [];
   }
-}
+};
 
-export const addUser = async (user: any) => {
-  try {
-    if (!user) return;
-    const db = await readDB();
-    await writeDB([...db, user]);
+const _writeDatabase = async(data: any) => {
+  const json = JSON.stringify(data, null, 2);
+  await writeFile(dbPath, json);
+};
 
-    return await readDB();
-  } catch(e) {
-    const error = new Error("SERVER ERROR") as any;
-    error.status = 500;
-    throw error;
+const _generateId = () => {
+  return Math.random().toString(36).substring(2, 10);
+};
+
+export const listUsers = async() => {
+  const users = await _readDatabase();
+  return users;
+};
+
+
+export const getUserById = async (id: any) => {
+  const users = await _readDatabase();
+  const user = users.find((u: any) => u.id === id);
+  return user || null;
+};
+
+export const createUser = async(userData: any) =>{
+  const users = await _readDatabase();
+  const newUser = {
+    id: _generateId(),
+    name: userData.name,
+    createdAt: new Date().toISOString()
+  };
+  users.push(newUser);
+  await _writeDatabase(users);
+  return newUser;
+};
+
+export const updateUser = async (id: any, updates: any) => {
+  const users = await _readDatabase();
+  const userIndex = users.findIndex((u: any) => u.id === id);
+  if (userIndex === -1) {
+    return null;
   }
-}
-
-export const getUser = async (id: string) => {
-  try {
-    if (!id) return;
-    const db = await readDB();
-
-    return db.find((u: any) => u.id === id);
-  } catch(e) {
-    const error = new Error("SERVER ERROR") as any;
-    error.status = 500;
-    throw error;
+  const user = users[userIndex];
+  if (updates.name !== undefined) {
+    user.name = updates.name;
   }
-}
+  users[userIndex] = user;
+  await _writeDatabase(users);
+  return user;
+};
 
-export const updateUser = async (id: string, user: any) => {
-  try {
-   if (!id || !user) return;
-   const db = await readDB();
-   const index = db.findIndex((u: any) => u.id === id);
-   if (index === -1) return;
-   db[index] = {
-     id: id,
-     ...user
-   };
-   await writeDB(db);
-
-   return await getUser(id);
-  } catch(e) {
-    const error = new Error("SERVER ERROR") as any;
-    error.status = 500;
-    throw error;
+export const deleteUser = async(id: any) => {
+  const users = await _readDatabase();
+  const initialLength = users.length;
+  const updatedUsers = users.filter((u: any) => u.id !== id);
+  if (updatedUsers.length === initialLength) {
+    return false;
   }
-}
-
-export const deleteUser = async (id: string) => {
-  try {
-    if (!id) return;
-    const db = await readDB();
-    const index = db.findIndex((u: any) => u.id === id);
-    if (index === -1) return;
-    db.splice(index, 1);
-    await writeDB(db);
-
-    return {
-      message: "User has been successfully deleted",
-      status: 200
-    };
-  } catch(e) {
-    const error = new Error("SERVER ERROR") as any;
-    error.status = 500;
-    throw error;
-  }
-}
+  await _writeDatabase(updatedUsers);
+  return true;
+};

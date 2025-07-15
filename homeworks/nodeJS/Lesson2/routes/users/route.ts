@@ -1,60 +1,36 @@
-import * as usersService from '../../services/users.service.ts';
+import { listUsers, createUser } from '../../services/users.service.js';
 
-export default async function (req: any, res: any) {
+export const GET = async(req: any, res: any) => {
+  const users = await listUsers();
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(users));
+};
 
-  if (req.method === 'GET') {
-    try {
-      const users = await usersService.getUsers();
-      res.writeHead(200, {'Content-Type': 'application/json'});
-      res.end(JSON.stringify(users));
-    } catch (error: any) {
-
-      if(error.status === 500) {
-        res.statusCode = 500;
-        res.end(JSON.stringify({
-          error: 'Internal Server Error',
-          status: 500
-        }));
-      }
-
-      res.statusCode = 404;
-      res.end(JSON.stringify({error: 'Not Found Users DB'}));
-    }
+export const  POST = async(req: any, res: any) => {
+  let body = '';
+  for await (const chunk of req) {
+    body += chunk;
+  }
+  let userData;
+  try {
+    userData = JSON.parse(body);
+  } catch (error) {
+    console.error(error);
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Invalid JSON' }));
+    return;
   }
 
-  else if (req.method === 'POST') {
-    let body = '';
-    req.on('data', (chunk: any) => body += chunk);
-    req.on('end', async () => {
-      try {
-        const user = JSON.parse(body);
-        await usersService.addUser(user);
-        const users = await usersService.getUsers();
-
-        if (!users) {
-          res.statusCode = 404;
-          res.end(JSON.stringify({error: 'Not Found Users DB'}));
-        }
-
-        res.end(JSON.stringify(users));
-      } catch (error: any) {
-
-        if(error.status === 500) {
-          res.statusCode = 500;
-          res.end(JSON.stringify({
-            error: 'Internal Server Error',
-            status: 500
-          }));
-        }
-
-        res.statusCode = 400;
-        res.end(JSON.stringify({error: 'Error On Adding User To DB'}));
-      }
-    });
+  if (!userData.name || typeof userData.name !== 'string') {
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: 'Name is required' }));
+    return;
   }
 
-  else {
-    res.writeHead(405);
-    res.end('Method Not Allowed');
-  }
-}
+  const newUser = await createUser(userData);
+  res.writeHead(201, {
+    'Content-Type': 'application/json',
+    'Location': `/users/${newUser.id}`
+  });
+  res.end(JSON.stringify(newUser));
+};

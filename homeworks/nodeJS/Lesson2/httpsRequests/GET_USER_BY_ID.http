@@ -1,5 +1,5 @@
 ### GET request to example server
-@id = 3
+@id = qt2929x0
 GET http://localhost:3000/users/{{id}}
 Content-Type: application/json
 
