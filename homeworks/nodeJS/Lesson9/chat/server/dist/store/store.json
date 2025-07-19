@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "id": "4548cd1f-6371-4118-86ee-54391eaa661b",
+      "name": "111",
+      "iconUrl": "/api/users/icons/4548cd1f-6371-4118-86ee-54391eaa661b.png"
+    },
+    {
+      "id": "1bc7ef29-8d8f-40a6-81f7-84e47736f73a",
+      "name": "1111",
+      "iconUrl": "/api/users/icons/1bc7ef29-8d8f-40a6-81f7-84e47736f73a.png"
+    },
+    {
+      "id": "8aecf383-fcc2-4bd9-9a6e-4343f6e91a17",
+      "name": "111",
+      "iconUrl": "/api/users/icons/8aecf383-fcc2-4bd9-9a6e-4343f6e91a17.png"
+    },
+    {
+      "id": "12df578e-a508-4996-943e-16322751e4c4",
+      "name": "222",
+      "iconUrl": "/api/users/icons/12df578e-a508-4996-943e-16322751e4c4.png"
+    },
+    {
+      "id": "164aea12-ce8b-445e-b2ae-ae50e9cd3edc",
+      "name": "test",
+      "iconUrl": "/api/users/icons/164aea12-ce8b-445e-b2ae-ae50e9cd3edc.png"
+    },
+    {
+      "id": "71247c39-1d3f-468a-9fba-eb81f07b4de3",
+      "name": "test",
+      "iconUrl": "/api/users/icons/71247c39-1d3f-468a-9fba-eb81f07b4de3.png"
+    },
+    {
+      "id": "ec346942-34da-4f7b-952a-67fcc871c581",
+      "name": "den",
+      "iconUrl": "/api/users/icons/ec346942-34da-4f7b-952a-67fcc871c581.png"
+    },
+    {
+      "id": "4851681e-edf8-47b8-a210-68596acf7282",
+      "name": "333",
+      "iconUrl": "/api/users/icons/4851681e-edf8-47b8-a210-68596acf7282.png"
+    }
+  ],
+  "chats": [],
+  "messages": []
+}

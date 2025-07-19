@@ -1,12 +1,12 @@
 import { Body, Controller, Get, Param, Post, Res, UploadedFile, UseInterceptors, ForbiddenException } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
-import {UserDTO} from "../dto";
-import {Store} from "../store/store";
+import { UserDTO } from "../dto";
+import { UsersService } from "./users.service";
 
 @Controller('/api/users')
 export class UsersController {
-  constructor(private store: Store) {}
+  constructor(private readonly usersService: UsersService) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('icon'))
@@ -14,12 +14,18 @@ export class UsersController {
     @Body('name') name: string,
     @UploadedFile() icon?: Express.Multer.File,
   ): UserDTO {
-    throw new ForbiddenException('Not implemented yet');
+    const user: { name: string, icon: Express.Multer.File | undefined } = {
+      name: name,
+      icon: icon
+    };
+
+    return this.usersService.createUser(user);
   }
 
   @Get()
   list(): { items: UserDTO[]; total: number } {
-    throw new ForbiddenException('Not implemented yet');
+    return this.usersService.getUsers();
+
   }
 
   @Get('icons/:iconPath')

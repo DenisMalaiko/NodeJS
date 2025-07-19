@@ -16,17 +16,21 @@ exports.ChatsController = void 0;
 const common_1 = require("@nestjs/common");
 const ioredis_1 = require("ioredis");
 const store_1 = require("../store/store");
+const chats_service_1 = require("./chats.service");
 let ChatsController = class ChatsController {
     store;
     redis;
-    constructor(store, redis) {
+    chatsService;
+    constructor(store, redis, chatsService) {
         this.store = store;
         this.redis = redis;
+        this.chatsService = chatsService;
     }
     async create(creator, body) {
         throw new common_1.ForbiddenException('Not implemented yet');
     }
     list(user) {
+        console.log("GET CHATS");
         throw new common_1.ForbiddenException('Not implemented yet');
     }
     async patch(actor, id, dto) {
@@ -72,6 +76,7 @@ __decorate([
 exports.ChatsController = ChatsController = __decorate([
     (0, common_1.Controller)('/api/chats'),
     __metadata("design:paramtypes", [store_1.Store,
-        ioredis_1.default])
+        ioredis_1.default,
+        chats_service_1.ChatsService])
 ], ChatsController);
 //# sourceMappingURL=chats.controller.js.map
