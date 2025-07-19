@@ -2,12 +2,14 @@ import { Body, Controller, Delete, ForbiddenException, Get, Headers, NotFoundExc
 import {ChatDTO} from "../dto";
 import Redis from "ioredis";
 import {Store} from "../store/store";
+import { ChatsService } from "./chats.service";
 
 @Controller('/api/chats')
 export class ChatsController {
   constructor(
     private store: Store,
-    private redis: Redis
+    private redis: Redis,
+    private readonly chatsService: ChatsService
   ) {}
 
   @Post()
@@ -20,7 +22,9 @@ export class ChatsController {
 
   @Get()
   list(@Headers('X-User') user: string) {
+    console.log("GET CHATS")
     throw new ForbiddenException('Not implemented yet');
+    //return this.chatsService.getChats(user)
   }
 
   @Patch(':id/members')

@@ -15,17 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
-const store_1 = require("../store/store");
+const users_service_1 = require("./users.service");
 let UsersController = class UsersController {
-    store;
-    constructor(store) {
-        this.store = store;
+    usersService;
+    constructor(usersService) {
+        this.usersService = usersService;
     }
     createUser(name, icon) {
-        throw new common_1.ForbiddenException('Not implemented yet');
+        const user = {
+            name: name,
+            icon: icon
+        };
+        return this.usersService.createUser(user);
     }
     list() {
-        throw new common_1.ForbiddenException('Not implemented yet');
+        return this.usersService.getUsers();
     }
     async icon(iconPath, res) {
         throw new common_1.ForbiddenException('Not implemented yet');
@@ -57,6 +61,6 @@ __decorate([
 ], UsersController.prototype, "icon", null);
 exports.UsersController = UsersController = __decorate([
     (0, common_1.Controller)('/api/users'),
-    __metadata("design:paramtypes", [store_1.Store])
+    __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 //# sourceMappingURL=users.controller.js.map
