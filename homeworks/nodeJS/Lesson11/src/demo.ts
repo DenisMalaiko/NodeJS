@@ -30,7 +30,9 @@ async function initDB() {
     const productId = product.id;
     console.log('Saved product:', product);
 
-    const allProducts = await productRepo.find();
+    const allProducts = await productRepo.find({
+      description: 'Sport Car'
+    });
     console.log('All product:', allProducts);
 
     const updatedUser = await productRepo.update(productId, {
