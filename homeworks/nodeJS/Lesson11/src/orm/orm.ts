@@ -1,34 +1,37 @@
 import { Pool } from 'pg';
+import { SQL } from 'sql-template-strings';
 
 export class Orm<T extends { id: string | number }> {
 
   constructor(
-    private table:
-    string, private pool: Pool
+    private table: string,
+    private pool: Pool
   ) {}
 
   async find(filters?: Partial<T>): Promise<T[]> {
-    let sql = `SELECT * FROM ${this.table}`;
-    const values: any[] = [];
+    let query = SQL`SELECT * FROM `.append(`${this.table}`);
 
     if (filters && Object.keys(filters).length > 0) {
-      const conditions = Object.entries(filters).map(([key, value], index) => {
-        values.push(value);
-        return `${key} = $${index + 1}`;
-      });
+      query = query.append(SQL` WHERE `);
 
-      sql += ` WHERE ` + conditions.join(' AND ');
+      const entries = Object.entries(filters);
+
+      entries.forEach(([key, value], index) => {
+        if (index > 0) query = query.append(SQL` AND `);
+
+        query = query.append(key + ' = ').append(SQL`${value}`);
+      });
     }
 
-    const result = await this.pool.query(sql, values);
+    const result = await this.pool.query(query);
     return result.rows;
   }
 
   async findOne(id: T['id']): Promise<T | null> {
-    const sql = `SELECT * FROM ${this.table} WHERE id = $1 LIMIT 1`;
+    const query = SQL`SELECT * FROM `.append(this.table).append(SQL` WHERE id = ${id} LIMIT 1`);
 
     try {
-      const result = await this.pool.query(sql, [id]);
+      const result = await this.pool.query(query, [id]);
       if (result.rows.length === 0) {
         return null;
       }
@@ -43,11 +46,17 @@ export class Orm<T extends { id: string | number }> {
     const keys = Object.keys(entity);
     const values = Object.values(entity);
     const columns = keys.join(', ');
-    const placeholders = keys.map((_, i) => `$${i + 1}`).join(', ');
 
-    const sql = `INSERT INTO ${this.table} (${columns}) VALUES (${placeholders}) RETURNING *`;
+    let query = SQL`INSERT INTO `.append(this.table).append(` (${columns}) VALUES (`);
 
-    const result = await this.pool.query(sql, values);
+    values.forEach((value, index) => {
+      if (index > 0) query = query.append(SQL`, `);
+      query = query.append(SQL`${value}`);
+    });
+
+    query = query.append(SQL`) RETURNING *`);
+
+    const result = await this.pool.query(query);
     return result.rows[0];
   }
 
@@ -63,16 +72,19 @@ export class Orm<T extends { id: string | number }> {
       .map((key, index) => `${key} = $${index + 1}`)
       .join(', ');
 
-    const sql = `UPDATE ${this.table} SET ${setClause} WHERE id = $${
-      keys.length + 1
-    } RETURNING *`;
+    const query = SQL`UPDATE `
+      .append(this.table)
+      .append(` SET `)
+      .append(setClause)
+      .append(` WHERE id = $${keys.length + 1} RETURNING *`);
 
-    const result = await this.pool.query(sql, [...values, id]);
+
+    const result = await this.pool.query(query, [...values, id]);
     return result.rows[0];
   }
 
   async delete(id: T['id']): Promise<void> {
-    const sql = `DELETE FROM ${this.table} WHERE id = $1`;
+    const sql = SQL`DELETE FROM `.append(this.table).append(SQL` WHERE id = ${id}`);
     const result = await this.pool.query(sql, [id]);
 
     if (result.rowCount === 0) {
