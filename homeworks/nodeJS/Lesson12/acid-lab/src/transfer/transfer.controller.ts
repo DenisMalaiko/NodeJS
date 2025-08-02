@@ -1,6 +1,10 @@
-import { Controller, Get, Post, Body, HttpCode, HttpException, HttpStatus } from '@nestjs/common';
-import { ApiHeader } from '@nestjs/swagger';
+import { Controller, Get, Post, HttpCode, HttpException, HttpStatus } from '@nestjs/common';
+import { ApiBody } from '@nestjs/swagger';
+import { ZBody } from "../decorators/z-body.decorator";
+import { TransferSchema, TransferDto } from "../dto/transfer.dto";
 import { TransferService } from './transfer.service';
+import { Account } from "../entities/account.entity";
+import { Movement } from "../entities/movement.entity";
 
 @Controller('transfer')
 export class TransferController {
@@ -8,28 +12,34 @@ export class TransferController {
   }
 
   @Get()
-  sayHelloWorld() {
-    return 'Hello World!';
+  async getAccounts() {
+    try {
+      const response: Account[] = await this.transferService.getAccounts();
+      return { message: 'Success!', response};
+    } catch (error) {
+      throw new HttpException(
+        { message: error.message || 'Failed!' },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   @Post()
   @HttpCode(201)
-  @ApiHeader({
-    name: 'fromId',
-    required: true,
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        fromId: { type: 'string' },
+        toId: { type: 'string' },
+        amount: { type: 'number', minimum:0.01 },
+      },
+      required: ['fromId', 'toId', 'amount'],
+    },
   })
-  @ApiHeader({
-    name: 'toId',
-    required: true,
-  })
-  @ApiHeader({
-    name: 'amount',
-    required: true,
-  })
-  async transfer(@Body() body: { fromId: string; toId: string; amount: number }) {
+  async transfer(@ZBody(TransferSchema) transfer: TransferDto) {
     try {
-      const response = await this.transferService.transfer(body.fromId, body.toId, body.amount,);
-
+      const response: Movement = await this.transferService.transfer(transfer.fromId, transfer.toId, transfer.amount);
       return { message: 'Success!', response};
     } catch (error) {
       throw new HttpException(

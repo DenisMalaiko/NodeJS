@@ -1,23 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm'
-import { DataSource, Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
 import { Account } from "../entities/account.entity";
 import { Movement } from "../entities/movement.entity";
 
 @Injectable()
 export class TransferService {
   constructor(
-    private dataSource: DataSource,
-
-    @InjectRepository(Account)
-    private readonly accountRepository: Repository<Account>,
-
-    @InjectRepository(Movement)
-    private readonly movementRepository: Repository<Movement>,
+    private db: DataSource,
   ) {}
 
-  async transfer(from: string, to: string, amount: number) {
-    return this.dataSource.transaction(async (manager) => {
+  async getAccounts():Promise<Account[]> {
+    return await this.db.getRepository(Account).find();
+  }
+
+  async transfer(from: string, to: string, amount: number):Promise<Movement> {
+    return this.db.transaction(async (manager) => {
       const accountFrom = await manager.findOne(Account, { where: { id: from } });
       const accountTo = await manager.findOne(Account, { where: { id: to } });
 
@@ -31,8 +28,8 @@ export class TransferService {
       await manager.save(accountTo);
 
       const movement = manager.create(Movement, {
-        accountFrom,
-        accountTo,
+        from: accountFrom,
+        to: accountTo,
         amount,
       });
 
