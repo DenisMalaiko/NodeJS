@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Movement } from './movement.entity';
 
-@Entity()
+@Entity('accounts')
 export class Account {
   @PrimaryGeneratedColumn('uuid')
   id: string;

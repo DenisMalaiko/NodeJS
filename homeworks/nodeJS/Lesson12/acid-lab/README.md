@@ -7,3 +7,7 @@
 
 ### Run Server
 ```npm run start```
+
+
+### Test
+```npm run test:e2e```
