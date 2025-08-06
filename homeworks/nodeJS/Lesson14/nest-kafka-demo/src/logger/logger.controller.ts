@@ -8,7 +8,6 @@ export class LoggerController {
 
   @MessagePattern('events.notifications')
   async handleUserSignedUp(@Payload() message: any) {
-    const event = JSON.parse(message.value.toString());
-    this.loggerService.logEvent(event);
+    this.loggerService.logEvent(message);
   }
 }
