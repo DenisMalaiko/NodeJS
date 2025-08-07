@@ -1,18 +1,17 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import * as process from "node:process";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  await new Promise(resolve => setTimeout(resolve, 3000));
 
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {
       client: {
         clientId: 'app-client',
-        brokers: ['localhost:9092'],
+        brokers: [process.env.KAFKA_BROKER || 'kafka:9092'],
       },
       consumer: {
         groupId: 'logger-group',
