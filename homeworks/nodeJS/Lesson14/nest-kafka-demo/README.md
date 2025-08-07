@@ -10,9 +10,6 @@
 - **Check KAFKA URL**
   ```nc -zv localhost 9092```
 
-### Run Server
-```npm run start```
-
 ### Run Endpoint
 curl -X POST http://localhost:3000/notification/signup \
 -H "Content-Type: application/json" \
