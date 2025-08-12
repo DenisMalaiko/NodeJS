@@ -28,6 +28,22 @@ registry.registerPath({
     method: 'get',
     path: '/api/brews',
     tags: ['Brews'],
+    parameters: [
+        {
+            name: 'method',
+            in: 'query',
+            required: false,
+            schema: { type: 'string' },
+            description: 'Метод'
+        },
+        {
+            name: 'ratingMin',
+            in: 'query',
+            required: false,
+            schema: { type: 'integer', minimum: 1, maximum: 5 },
+            description: 'Рейтинг'
+        },
+    ],
     responses: {
         200: {
             description: 'Array of brews',

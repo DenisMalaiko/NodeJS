@@ -1,24 +1,33 @@
 import http from 'node:http';
 import { createApp } from './app.js';
 import { config } from './config/index.js';
+import { container } from './container.js';
 
 const app = createApp();
 const server = http.createServer(app);
 
 server.listen(config.port, () =>
-  console.log(`🚀 ${config.env} API ready on http://localhost:${config.port}`)
+    console.log(`🚀 ${config.env} API ready on http://localhost:${config.port}`)
 );
 
-function shutDown() {
+async function shutDown() {
   console.log('🔄  Shutting down gracefully...');
 
-  server.close(() => {
-    console.log('✅  Closed out remaining connections');
-    process.exit(0);
-  });
+  try {
+    await container.dispose();
+    console.log('🗑️  Container disposed');
 
-  // Якщо через 10 сек не закрився — kill
-  setTimeout(() => process.exit(1), 10_000).unref();
+    server.close(() => {
+      console.log('✅  Closed out remaining connections');
+      process.exit(0);
+    });
+
+    setTimeout(() => process.exit(1), 10_000).unref();
+
+  } catch (err) {
+    console.error('❌ Error during shutdown', err);
+    process.exit(1);
+  }
 }
 
 process.on('SIGTERM', shutDown);

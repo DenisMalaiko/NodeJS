@@ -7,28 +7,44 @@ export class BrewsModel {
     constructor() {
         console.log(`BrewModel initialized`);
 
-        const id = nanoid(8);
-        const sample = {
-            id,
-            beans: "Ethiopia Guji",
-            method: "v60",
-            rating: 4.5,
-            notes: "Floral, bright acidity",
-            brewedAt: new Date("2025-06-29T08:30:00Z"),
-        };
+        const samples = [
+            {
+                beans: "Ethiopia Guji",
+                method: "v60",
+                rating: 4.5,
+                notes: "Floral, bright acidity",
+                brewedAt: new Date("2025-06-29T08:30:00Z"),
+            },
+            {
+                beans: "Colombia Huila",
+                method: "aeropress",
+                rating: 3,
+                notes: "Sweet, caramel finish",
+                brewedAt: new Date("2025-07-01T09:15:00Z"),
+            },
+            {
+                beans: "Kenya AA",
+                method: "chemex",
+                rating: 2,
+                notes: "Berry notes, juicy body",
+                brewedAt: new Date("2025-07-05T07:50:00Z"),
+            }
+        ];
 
-        this.store.set(id, sample);
+        for (const sample of samples) {
+            const id = nanoid(8);
+            this.store.set(id, { id, ...sample });
+        }
     }
 
     list(queryParams) {
         const method = queryParams?.method ?? null;
         const ratingMin = queryParams.ratingMin ?? null;
-
         const data = [...this.store.values()];
 
         const result = data
             .filter(brew => method ? brew.method === method : brew.method)
-            .filter(brew => ratingMin ? brew.rating >= ratingMin : brew.rating)
+            .filter(brew => ratingMin ? brew.rating >= Number(ratingMin) : brew.rating)
 
         return result;
     }
