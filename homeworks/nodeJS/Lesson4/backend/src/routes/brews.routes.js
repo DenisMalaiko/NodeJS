@@ -57,7 +57,7 @@ registry.registerPath({
     method: 'get',
     path: '/api/brews/{id}',
     tags: ['Brews'],
-    request: {params: paramsSchema}, // опис path-param
+    request: {params: paramsSchema},
     responses: {
         200: {description: 'Brew', content: {'application/json': {schema: BrewDTO}}},
         404: {description: 'Brew not found'}

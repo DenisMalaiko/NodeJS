@@ -36,11 +36,6 @@ export class TeaController {
 
   @Post()
   @RateLimit(10)
-  @ApiHeader({
-    name: 'x-api-key',
-    description: 'API Key to bypass the guard. Use "TEST"',
-    required: true,
-  })
   @ApiBody({
     schema: {
       type: 'object',
