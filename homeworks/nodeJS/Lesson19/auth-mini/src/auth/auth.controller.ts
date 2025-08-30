@@ -5,13 +5,14 @@ import { AuthService } from './auth.service';
 import { LoginDto } from "./dto/login.dto";
 import { RefreshDto } from "./dto/refresh.dto";
 
-@Controller()
+@Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
   async login(@Body() body: LoginDto, @Req() req: ExpressRequest) {
-    return this.authService.login(body);
+    const authToken: string | undefined = req.header('authorization') ?? undefined;
+    return this.authService.login(body, authToken);
   }
 
   @Post('refresh')
